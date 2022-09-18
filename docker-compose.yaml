@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=fastapi_database
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432"
+
+  webserver:
+    build:
+      context: images/fastapi_service
+    image: fastapi_service
+    
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - "8002:8002"
+
+volumes:   # add this section
+  pgdata:    # does not need anything underneath this
