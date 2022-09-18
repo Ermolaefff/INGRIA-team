@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING, List
+from sqlalchemy.engine.reflection import Inspector as _inspector
 
 import database as _database
 import models as _models
@@ -7,8 +8,10 @@ import schemas as _schemas
 if TYPE_CHECKING:
     from sqlalchemy.orm import Session
 
-def _add_tables():
-    return _database.Base.metadata.create_all(bind=_database.engine)
+def _add_table():
+    inspector = _inspector.from_engine(_database.engine)
+    if not _models.Car.__tablename__ in inspector.get_table_names():
+        return _database.Base.metadata.create_all(bind=_database.engine)
 
 def get_db():
     db = _database.SessionLocal()
@@ -32,6 +35,10 @@ async def get_all_cars(db: "Session") -> List[_schemas.Car]:
 
 async def get_car(car_id: int, db: "Session"):
     car = db.query(_models.Car).filter(_models.Car.id == car_id).first()
+    return car
+
+async def get_car_by_number(car_number: str, db: "Session"):
+    car = db.query(_models.Car).filter(_models.Car.car_number == car_number).first()
     return car
 
 async def delete_car(car: _models.Car, db: "Session"):
