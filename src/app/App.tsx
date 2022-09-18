@@ -15,7 +15,7 @@ function App() {
                 target='_blank'
                 className='menuEl'
                 rel='noreferrer'
-            >блядское задание</a>
+            >Задание</a>
     </Toolbar>
     <div className='layout'>
       <Routes>
