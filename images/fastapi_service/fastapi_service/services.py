@@ -12,6 +12,7 @@ def _add_table():
     inspector = _inspector.from_engine(_database.engine)
     if not _models.Car.__tablename__ in inspector.get_table_names():
         return _database.Base.metadata.create_all(bind=_database.engine)
+    
 
 def get_db():
     db = _database.SessionLocal()
@@ -29,9 +30,15 @@ async def create_car(
     db.refresh(car)
     return _schemas.Car.from_orm(car)
 
-async def get_all_cars(db: "Session") -> List[_schemas.Car]:
+#async def get_all_cars(db: "Session") -> List[_schemas.Car]:
+#    cars = db.query(_models.Car).all()
+#    return list(map(_schemas.Car.from_orm, cars))
+
+async def get_certain_cars(page: int, per_page: int, db: "Session") -> List[_schemas.Car]:
     cars = db.query(_models.Car).all()
+    print("!HELLO!")
     return list(map(_schemas.Car.from_orm, cars))
+
 
 async def get_car(car_id: int, db: "Session"):
     car = db.query(_models.Car).filter(_models.Car.id == car_id).first()

@@ -1,9 +1,10 @@
 from typing import TYPE_CHECKING, List
+from fastapi.middleware.cors import CORSMiddleware as _cors
+
 import fastapi as _fastapi
 import uvicorn as _uvicorn
 import sqlalchemy.orm as _orm
 import os as _os
-
 import schemas as _schemas
 import services as _services
 
@@ -12,6 +13,14 @@ if TYPE_CHECKING:
 
 app = _fastapi.FastAPI()
 
+app.add_middleware(
+    _cors,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.post("/api/car/", response_model=_schemas.Car)
 async def create_car(
     car: _schemas.CreateCar, 
@@ -19,9 +28,9 @@ async def create_car(
 ):
     return await _services.create_car(car=car, db=db)
 
-@app.get("/api/car/", response_model=List[_schemas.Car])
-async def get_car(db:_orm.Session = _fastapi.Depends(_services.get_db)):
-    return await _services.get_all_cars(db=db)
+#@app.get("/api/car/", response_model=List[_schemas.Car])
+#async def get_all_cars(db:_orm.Session = _fastapi.Depends(_services.get_db)):
+#    return await _services.get_all_cars(db=db)
 
 @app.get("/api/car/{car_id}/", response_model=_schemas.Car)
 async def get_car(
@@ -43,6 +52,15 @@ async def delete_car(
 
     await _services.delete_car(car, db=db)
     return "The car was deleted"
+
+@app.get("/api/car/", response_model=List[_schemas.Car])
+async def get_certain_cars(
+    page: int, 
+    per_page : int,
+    db:_orm.Session = _fastapi.Depends(_services.get_db)
+):
+    #?page={page}&per_page={per_page}/
+    return await _services.get_certain_cars(page=page, per_page=per_page, db=db)       
 
 @app.put("/api/car/{car_id}/", response_model=_schemas.Car)
 async def update_car(
