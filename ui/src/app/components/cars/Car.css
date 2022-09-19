@@ -2,6 +2,9 @@
     width: 100%;
     margin-bottom: 20px;
 }
+.box{
+    min-height: 100vh;
+}
 .carCard{
     display: flex;
     justify-content: space-evenly;

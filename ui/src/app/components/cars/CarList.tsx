@@ -78,6 +78,7 @@ function CarList() {
 
     
     function handleScroll() {
+        console.log(window.innerHeight + document.documentElement.scrollTop, document.documentElement.offsetHeight)
         if (window.innerHeight + document.documentElement.scrollTop < document.documentElement.offsetHeight) return;
         if(!scrolled)
             setIsFetching(true);
@@ -94,7 +95,7 @@ function CarList() {
 
 
     return (
-        <>
+        <div className='box'>
             <h1>Cars DB</h1>
             <div className='search'>
                 <label htmlFor="Search">
@@ -153,7 +154,7 @@ function CarList() {
             {/* {modal && <Modal title="Create car information" onClose = {close}>
                 <CreateCar onCreate={close} />
             </Modal>} */}
-        </>
+        </div>
   );
 }
 
