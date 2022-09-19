@@ -12,7 +12,6 @@ def _add_table():
     inspector = _inspector.from_engine(_database.engine)
     if not _models.Car.__tablename__ in inspector.get_table_names():
         return _database.Base.metadata.create_all(bind=_database.engine)
-    
 
 def get_db():
     db = _database.SessionLocal()
@@ -29,10 +28,6 @@ async def create_car(
     db.commit()
     db.refresh(car)
     return _schemas.Car.from_orm(car)
-
-#async def get_all_cars(db: "Session") -> List[_schemas.Car]:
-#    cars = db.query(_models.Car).all()
-#    return list(map(_schemas.Car.from_orm, cars))
 
 async def get_cars(page: int, per_page: int, db: "Session") -> List[_schemas.Car]:
     cars = db.query(_models.Car).all()
@@ -59,6 +54,7 @@ async def update_car(
     car.model = car_data.model
     car.owner = car_data.owner
     car.odometer = car_data.odometer
+    car.picture = car_data.picture
 
     db.commit()
     db.refresh(car)

@@ -28,10 +28,6 @@ async def create_car(
 ):
     return await _services.create_car(car=car, db=db)
 
-#@app.get("/api/car/", response_model=List[_schemas.Car])
-#async def get_all_cars(db:_orm.Session = _fastapi.Depends(_services.get_db)):
-#    return await _services.get_all_cars(db=db)
-
 @app.get("/api/car/{car_id}/", response_model=_schemas.Car)
 async def get_car(
     car_id: int, db:_orm.Session = _fastapi.Depends(_services.get_db)

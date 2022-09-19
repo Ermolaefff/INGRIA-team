@@ -4,8 +4,10 @@ import pydantic as _pydantic
 class _BaseCar(_pydantic.BaseModel):
     car_number : str
     model : str
+    picture : str
     owner : int
     odometer : float
+    picture : str
 
 class Car(_BaseCar):
     id: int

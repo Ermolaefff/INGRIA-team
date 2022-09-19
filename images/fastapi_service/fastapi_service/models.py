@@ -13,3 +13,4 @@ class Car(_database.Base):
     model = _sql.Column(_sql.String, index=True)
     owner = _sql.Column(_sql.Integer, index=True)
     odometer = _sql.Column(_sql.Integer, index=True)
+    picture = _sql.Column(_sql.String, index=True)
