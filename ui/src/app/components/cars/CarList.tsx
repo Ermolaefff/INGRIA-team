@@ -24,7 +24,8 @@ function CarList() {
         setLoading(true)
         api.getCars(page)
         .then(res => {
-            cars.concat(res);
+            if(!res.length) setScrolled(true);
+            setCars(cars.concat(res));
             setPage(page + 1)
         })
         .catch(err => {
@@ -57,10 +58,10 @@ function CarList() {
     function onCreateCar(){
         api.postCar({
             id: 0,
-            car_number: 'aa000aaa',
-            model: 'car model',
+            car_number: '',
+            model: '',
             owner: 0,
-            odometer: 1000,
+            odometer: 0,
         }).then(res => navigate(`/car/${res.id}?editing=true`));
     }
 
@@ -127,12 +128,13 @@ function CarList() {
                 ))}
             </div>
         
-            <div id='bottom' style={{width: '100%', height: '1px', marginBottom: "5px"}}>
+            <div id='bottom' 
+            style={{width: '100%', height: '5px', marginBottom: "10px"}}>
             </div>
 
-            {scrolled && 
+            {scrolled &&
                 <div style={{textAlign: 'center', width: '100%'}}>
-                    <span className='loadMore' onClick={getCars}>Try to load more cars</span>
+                    <span className='loadMore' onClick={() => {setScrolled(false); getCars(); }}>Try to load more cars</span>
                 </div>
             }
 

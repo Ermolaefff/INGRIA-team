@@ -79,7 +79,7 @@ function CarPage() {
       if(carToEdit)
         setCarToEdit({
         ...carToEdit,
-        picture: reader.result?.toString()
+        picture: reader.result ? reader.result.toString() : ''
       })
     }
 
@@ -118,7 +118,7 @@ function CarPage() {
             <input type="file" onChange={(ev) => onAddPucture(ev)}/>
             <img src={carToEdit.picture}  className='image'/>
             <div className="information">
-              <form>
+              <form onSubmit={handleSubmit} method='PUT'>
                 <label>
                   Number:
                   <input className="edit-input" type="text" name="number"
@@ -149,7 +149,7 @@ function CarPage() {
                   onChange={(ev) => handleChange(ev, 'odometer')} />
                 </label>
                 <br />
-                <button className="edit-button"  onClick={handleSubmit}>Submit</button>
+                <input className="edit-button" type="submit" value="Submit" />
                 <button className="edit-button" onClick={onCancel} >Cancel</button>
               </form>
             </div>
