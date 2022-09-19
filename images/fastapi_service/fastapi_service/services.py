@@ -54,7 +54,7 @@ async def update_car(
     car.model = car_data.model
     car.owner = car_data.owner
     car.odometer = car_data.odometer
-    car.picture = car_data.picture
+#    car.picture = car_data.picture
 
     db.commit()
     db.refresh(car)
