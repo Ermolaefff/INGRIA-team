@@ -34,9 +34,9 @@ async def create_car(
 #    cars = db.query(_models.Car).all()
 #    return list(map(_schemas.Car.from_orm, cars))
 
-async def get_certain_cars(page: int, per_page: int, db: "Session") -> List[_schemas.Car]:
+async def get_cars(page: int, per_page: int, db: "Session") -> List[_schemas.Car]:
     cars = db.query(_models.Car).all()
-    print("!HELLO!")
+    cars = cars[page * per_page : (page + 1) * per_page]
     return list(map(_schemas.Car.from_orm, cars))
 
 

@@ -54,13 +54,12 @@ async def delete_car(
     return "The car was deleted"
 
 @app.get("/api/car/", response_model=List[_schemas.Car])
-async def get_certain_cars(
+async def get_cars(
     page: int, 
     per_page : int,
     db:_orm.Session = _fastapi.Depends(_services.get_db)
 ):
-    #?page={page}&per_page={per_page}/
-    return await _services.get_certain_cars(page=page, per_page=per_page, db=db)       
+    return await _services.get_cars(page=page, per_page=per_page, db=db)       
 
 @app.put("/api/car/{car_id}/", response_model=_schemas.Car)
 async def update_car(
