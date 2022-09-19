@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './Car.css';
 import { Car } from '../../../interfaces/car';
 import { Link } from 'react-router-dom';
 import { Api } from '../../../services/api.service';
+import {CreateCar} from "../creation/CreateCar";
+import {Modal} from "../Modal";
+import {ModalContext} from "../../ModalContext/ModalContext";
 
 
 
@@ -15,8 +18,7 @@ function CarList() {
     const [scrolled, setScrolled] = useState<boolean>(false);
     const [page, setPage] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(false);
-
-    
+    const {modal, open, close} = useContext(ModalContext);
     
     const getCars = (page: number = 1, per_page: number = 10) => {
         setLoading(true)
@@ -45,10 +47,10 @@ function CarList() {
     function getSearch(search: string){
         return cars.filter(car => {
             const s = search.toLocaleLowerCase();
-            return car.producer.toLocaleLowerCase().includes(s) || 
-            car.model.toLocaleLowerCase().includes(s) || 
-            car.releaseYear?.toString().includes(s) ||
-            car.owner?.toLocaleLowerCase().includes(s)
+            return car.odometer.toString().includes(s) ||
+            car.model.toLocaleLowerCase().includes(s) ||
+            car.number?.toString().includes(s) ||
+            car.owner?.toString().includes(s)
         })
     }
 
@@ -82,13 +84,16 @@ function CarList() {
                 </label>
                 <input id='search' type='text' name='Search' placeholder='Search here'
                 onChange={(ev) => onSearch(ev.target.value)}/>
+                <br/>
+                <button onClick ={open} className="create-button">Create Car Note</button>
                 { !!carDataSource.length &&
                     <div className='searchResults'>
                         {carDataSource.map(car => 
-                            <Link to={'/car/' + car.id} className='carCard' key={'car-' + car.id}>
-                            <span className='cardElement'>{car.producer}</span>
+                            <Link to={'/car/' + car.number} className='carCard' key={'car-' + car.number}>
+                            <span className='cardElement'>{car.number}</span>
                             <span className='cardElement'>{car.model}</span>
                             <span className='cardElement'>{car.owner}</span>
+                            <span className='cardElement'>{car.odometer}</span>
                             </Link>)
                         }
                     </div>  
@@ -96,22 +101,29 @@ function CarList() {
             </div>
 
             <div className="header">
-                <span className='cardElement'>Prod.</span>
+                <span className='cardElement'>Number</span>
                 <span className='cardElement'>Model</span>
                 <span className='cardElement'>Owner</span>
+                <span className='cardElement'>Odometer</span>
             </div>
             <div className='container'>
                 { cars.map(car => (
-                    <Link to={'/car/' + car.id} className='carCard' key={'car-' + car.id}>
-                        <span className='cardElement'>{car.producer}</span>
+                    <Link to={'/car/' + car.number} className='carCard' key={'car-' + car.number}>
+                        <span className='cardElement'>{car.number}
+                        </span>
                         <span className='cardElement'>{car.model}</span>
                         <span className='cardElement'>{car.owner}</span>
+                        <span className='cardElement'>{car.odometer}</span>
                     </Link>
                 ))}
             </div>
         
             <div id='bottom' style={{width: '100%', height: '1px'}}>
             </div>
+
+            {modal && <Modal title="Create car information" onClose = {close}>
+                <CreateCar onCreate={close} />
+            </Modal>}
         </>
   );
 }

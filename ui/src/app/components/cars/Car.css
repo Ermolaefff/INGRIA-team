@@ -35,6 +35,7 @@
     flex: 1 0 10%;
     text-decoration: none;
     text-align: center;
+    width: 50px;
 }
 .spacer{
     flex: 1 1 auto;
@@ -66,12 +67,63 @@
 }
 
 .image{
-    display: block;
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 500px;
 }
+
+.information{
+    display: inline-block;
+    position: fixed;
+    color: black;
+    margin-top: 5px;
+    padding-left: 10px;
+    font-size: 30px;
+}
+
 .searchResults{
     position: absolute;
     width: 100%;
     z-index: 5;
     background: white;
     
+}
+
+.back-button{
+    margin-top: 10px;
+    margin-left: 10px;
+    width:100px;
+    height: 30px;
+    font-size: 20px;
+}
+
+.create-button{
+    margin-top: 10px;
+    font-size: larger;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.create-input{
+    font-size: 25px;
+    margin-top: 5px;
+}
+
+.edit-input{
+    font-size: 25px;
+}
+
+.edit-button{
+    margin-top: 10px;
+    margin-left: 10px;
+    width:100px;
+    height: 30px;
+    font-size: 20px;
+}
+
+.input-label{
+    font-size:25px;
 }

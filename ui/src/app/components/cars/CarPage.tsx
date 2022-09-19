@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Car.css';
-import { useParams } from "react-router-dom"
+import {Link, useParams} from "react-router-dom"
 import { Api } from '../../../services/api.service';
 import { Car } from '../../../interfaces/car' 
 import { useNavigate } from "react-router-dom";
@@ -50,53 +50,69 @@ function CarPage() {
     <>
       { !editing &&
         <>
-          {car ? 
-            <div>
-              <img src={car.image} className='image'/>
-              Id: {car.id}
-              <br />
-
-              Prod: {car.producer}
-              <br />
-              Model: {car.model}
-              <br />
-              <button onClick={() => setEditing(true)}>Edit</button>
-              <button onClick={() => onDelete(car.id)}>Delete</button>
-            </div> :
+          {car ?
+            <>
+              <Link to="/"><button className="back-button"> Back </button></Link>
+              <div>
+                <img src={car.image} className='image'/>
+                <p className='information'>
+                  Number: {car.number} <br/>
+                  Model: {car.model} <br/>
+                  Owner: {car.owner} <br/>
+                  Odometer: {car.odometer}
+                  <br/>
+                  <button className="edit-button" onClick={() => setEditing(true)}>Edit</button>
+                  <button className="edit-button" onClick={() => onDelete(car.number)}>Delete</button>
+                </p>
+              </div>
+            </>
+              :
             <div>Loading...</div>
           }
         </>
       }
       { editing && carToEdit &&
         <>
-          <img src={carToEdit.image}  className='image'/>
-          <form onSubmit={handleSubmit}>
-            <label>
-              Producer:
-              <input type="text" name="prod" 
-              value={carToEdit.producer}
-              onChange={(ev) => handleChange(ev, 'producer')} />
-            </label>
-            <br />
+          <Link to="/"><button className="back-button"> Back </button></Link>
+          <div className="car-block">
+            <img src={carToEdit.image}  className='image'/>
+            <p className="information">
+              <form onSubmit={handleSubmit} >
+                <label>
+                  Number:
+                  <input className="edit-input" type="text" name="number"
+                         value={carToEdit.number}
+                         onChange={(ev) => handleChange(ev, 'producer')} />
+                </label>
+                <br />
 
-            <label>
-              Model:
-              <input type="text" name="model"
-              value={carToEdit.model} 
-              onChange={(ev) => handleChange(ev, 'model')} />
-            </label>
-            <br />
+                <label>
+                  Model:
+                  <input className="edit-input" type="text" name="model"
+                  value={carToEdit.model}
+                  onChange={(ev) => handleChange(ev, 'model')} />
+                </label>
+                <br />
+                <label>
+                  Owner:
+                  <input className="edit-input" type="text" name="owner"
+                         value={carToEdit.owner}
+                         onChange={(ev) => handleChange(ev, 'producer')} />
+                </label>
+                <br />
 
-            <label>
-              Year:
-              <input type="number" name="year" 
-              value={carToEdit.releaseYear}
-              onChange={(ev) => handleChange(ev, 'releaseYear')} />
-            </label>
-          <br />
-            <input type="submit" value="Submit" />
-            <button onClick={() => setEditing(false)} >Cancel</button>
-          </form>
+                <label>
+                  Odometer:
+                  <input className="edit-input" type="number" name="odometer"
+                  value={carToEdit.odometer}
+                  onChange={(ev) => handleChange(ev, 'releaseYear')} />
+                </label>
+                <br />
+                <input className="edit-button" type="submit" value="Submit" />
+                <button className="edit-button" onClick={() => setEditing(false)} >Cancel</button>
+              </form>
+            </p>
+          </div>
         </>
       }
     </>

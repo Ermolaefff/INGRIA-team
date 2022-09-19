@@ -1,0 +1,31 @@
+.backModal{
+    position: fixed;
+    background-color: black;
+    opacity: 0.5;
+    /*margin: 0px 0px 0px 0px;*/
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+}
+
+.frontModal{
+    width: 500px;
+    height: auto;
+    padding: 5px;
+    padding-bottom: 10px;
+    background-color: white;
+    position: absolute;
+    margin:0;
+    top:30%;
+    left:50%;
+    margin-right:50%;
+    transform: translate(-50%, -50%);
+}
+
+.modal-text{
+    font-size: 30px;
+    text-align: center;
+    margin-top:2px;
+    margin-bottom: 2px;
+}
