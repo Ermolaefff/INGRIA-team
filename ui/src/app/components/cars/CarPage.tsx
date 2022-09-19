@@ -67,6 +67,7 @@ function CarPage() {
       api.putCar(carToEdit).then(res => {
         setCar(res);
         setCarToEdit(res);
+        navigate('');
         setEditing(false);
       })
   }
@@ -94,7 +95,7 @@ function CarPage() {
             <>
               <Link to="/"><button className="back-button"> Back </button></Link>
               <div>
-                <img src={car.picture} className='image'/>
+                {/* <img src={car.model} className='image'/> */}
                 <p className='information'>
                   Number: {car.car_number} <br/>
                   Model: {car.model} <br/>
@@ -115,10 +116,13 @@ function CarPage() {
         <>
           <Link to="/"><button className="back-button"> Back </button></Link>
           <div className="car-block">
-            <input type="file" onChange={(ev) => onAddPucture(ev)}/>
-            <img src={carToEdit.picture}  className='image'/>
+            {/* <input type="file" onChange={(ev) => onAddPucture(ev)}/> */}
+            {/* <img src={carToEdit.picture}  className='image'/> */}
             <div className="information">
-              <form onSubmit={handleSubmit} method='PUT'>
+              <form onSubmit={(ev) => {
+                ev.preventDefault();
+                handleSubmit();
+              }} >
                 <label>
                   Number:
                   <input className="edit-input" type="text" name="number"
@@ -130,7 +134,7 @@ function CarPage() {
                 <label>
                   Model:
                   <input className="edit-input" type="text" name="model"
-                  value={carToEdit.model}
+                  value={carToEdit.picture}
                   onChange={(ev) => handleChange(ev, 'model')} />
                 </label>
                 <br />

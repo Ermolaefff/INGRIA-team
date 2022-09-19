@@ -16,25 +16,36 @@ function CarList() {
     const [carDataSource, setCarDataSource] = useState<Car[]>([]);
     const [search, setSearch] = useState<string>('');
     const [scrolled, setScrolled] = useState<boolean>(false);
-    const [page, setPage] = useState<number>(1);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [page, setPage] = useState<number>(0);
+    const [isFetching, setIsFetching] = useState(true);
+    
     // const {modal, open, close} = useContext(ModalContext);
     
     const getCars = () => {
-        setLoading(true)
-        api.getCars(page)
-        .then(res => {
+        // api.getCars(page)
+        // .then(res => {
+        //     if(!res.length) setScrolled(true);
+        //     setCars(cars.concat(res));
+        //     setPage(page + 1);
+        // })
+        // .catch(err => {
+        //     setScrolled(true)
+        //     console.log(err)
+        // })
+        // .finally(() => {
+        //     setIsFetching(false);
+        // });
+        // // console.log("loadDataOnlyOnce");
+        api.getCars(page).then(res => {
             if(!res.length) setScrolled(true);
-            setCars(cars.concat(res));
+            setCars(cars.concat(res))
             setPage(page + 1)
-        })
-        .catch(err => {
-            setScrolled(true)
-        })
-        .finally(() => {
-            setLoading(false);
-        });
-        // console.log("loadDataOnlyOnce");
+            
+           }).finally(() => {
+            setIsFetching(false);
+           })
+
+        
     }
 
     function onSearch(search: string){
@@ -65,24 +76,21 @@ function CarList() {
         }).then(res => navigate(`/car/${res.id}?editing=true`));
     }
 
+    
+    function handleScroll() {
+        if (window.innerHeight + document.documentElement.scrollTop < document.documentElement.offsetHeight) return;
+        if(!scrolled)
+            setIsFetching(true);
+    }
     useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    useEffect(() => {
+        if (!isFetching) return;
         getCars();
-    }, [])
-
-
-    useEffect(() => {
-        // console.log(bottom);
-        const bottom = document.getElementById('bottom') as HTMLDivElement;
-        
-        let onscroll = (ev: any) => {         
-            if(!scrolled && isInViewport(bottom)){
-                getCars();
-            } 
-        }
-        
-        document.addEventListener('scroll', onscroll);
-        return () => document.removeEventListener('scroll', onscroll);
-    },[])
+      }, [isFetching])
 
 
     return (
@@ -132,11 +140,15 @@ function CarList() {
             style={{width: '100%', height: '5px', marginBottom: "10px"}}>
             </div>
 
+            {isFetching && !scrolled &&
+                <div>Loading...</div>
+            }
+
             {scrolled &&
                 <div style={{textAlign: 'center', width: '100%'}}>
                     <span className='loadMore' onClick={() => {setScrolled(false); getCars(); }}>Try to load more cars</span>
                 </div>
-            }
+            }   
 
             {/* {modal && <Modal title="Create car information" onClose = {close}>
                 <CreateCar onCreate={close} />
