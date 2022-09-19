@@ -1,8 +1,8 @@
 export interface Car{
     id: number;
-    number:string;
+    car_number:string;
     model:string;
     owner:number;
     odometer:number;
-    image?:string;
+    picture?: string;
 }

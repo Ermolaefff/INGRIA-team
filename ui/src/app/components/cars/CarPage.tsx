@@ -3,7 +3,7 @@ import './Car.css';
 import {Link, useParams} from "react-router-dom"
 import { Api } from '../../../services/api.service';
 import { Car } from '../../../interfaces/car' 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function CarPage() {
   const api = new Api();
@@ -11,13 +11,23 @@ function CarPage() {
   const [car, setCar] = useState<Car>();
   const [carToEdit, setCarToEdit] = useState<Car>();
   const [editing, setEditing] = useState<boolean>(false)
-  
+
+  const search = useLocation().search;
+
+  useEffect(() => {
+    const ed = new URLSearchParams(search).get('editing');
+    setEditing(!!ed)
+  })
+
   let { id } = useParams();
   
   const getCar = (id: string) => {
     api.getCar(id).then(res => {
       setCar(res);
       setCarToEdit(res);
+    }).catch(err => {
+      alert(err);
+      window.location.href = '/';
     });
   }
   
@@ -35,15 +45,45 @@ function CarPage() {
       );
   }
 
-  function onDelete(id: string){
-    //TODO here would be deleting request
-    navigate('/');
+  function onDelete(id: number){
+    api.deleteCar(id).then(res => {
+      navigate('/');
+    })
+  }
+
+  function onEdit(){
+    navigate('?editing=true');
+    setEditing(true);
+  }
+
+  function onCancel(){
+    navigate('');
+    setEditing(false);
+    setCarToEdit(car)
   }
 
   function handleSubmit(){
-    //TODO here would be put request
-    setCar(carToEdit)
-    setEditing(false);
+    if(carToEdit)
+      api.putCar(carToEdit).then(res => {
+        setCar(res);
+        setCarToEdit(res);
+        setEditing(false);
+      })
+  }
+
+  function onAddPucture(ev: any){
+    const file = ev.target.files[0];
+
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      if(carToEdit)
+        setCarToEdit({
+        ...carToEdit,
+        picture: reader.result?.toString()
+      })
+    }
+
+    reader.readAsDataURL(file)
   }
 
   return (
@@ -54,15 +94,15 @@ function CarPage() {
             <>
               <Link to="/"><button className="back-button"> Back </button></Link>
               <div>
-                <img src={car.image} className='image'/>
+                <img src={car.picture} className='image'/>
                 <p className='information'>
-                  Number: {car.number} <br/>
+                  Number: {car.car_number} <br/>
                   Model: {car.model} <br/>
                   Owner: {car.owner} <br/>
                   Odometer: {car.odometer}
                   <br/>
-                  <button className="edit-button" onClick={() => setEditing(true)}>Edit</button>
-                  <button className="edit-button" onClick={() => onDelete(car.number)}>Delete</button>
+                  <button className="edit-button" onClick={onEdit}>Edit</button>
+                  <button className="edit-button" onClick={() => onDelete(car.id)}>Delete</button>
                 </p>
               </div>
             </>
@@ -75,14 +115,15 @@ function CarPage() {
         <>
           <Link to="/"><button className="back-button"> Back </button></Link>
           <div className="car-block">
-            <img src={carToEdit.image}  className='image'/>
-            <p className="information">
-              <form onSubmit={handleSubmit} >
+            <input type="file" onChange={(ev) => onAddPucture(ev)}/>
+            <img src={carToEdit.picture}  className='image'/>
+            <div className="information">
+              <form>
                 <label>
                   Number:
                   <input className="edit-input" type="text" name="number"
-                         value={carToEdit.number}
-                         onChange={(ev) => handleChange(ev, 'producer')} />
+                         value={carToEdit.car_number}
+                         onChange={(ev) => handleChange(ev, 'car_number')} />
                 </label>
                 <br />
 
@@ -97,7 +138,7 @@ function CarPage() {
                   Owner:
                   <input className="edit-input" type="text" name="owner"
                          value={carToEdit.owner}
-                         onChange={(ev) => handleChange(ev, 'producer')} />
+                         onChange={(ev) => handleChange(ev, 'owner')} />
                 </label>
                 <br />
 
@@ -105,13 +146,13 @@ function CarPage() {
                   Odometer:
                   <input className="edit-input" type="number" name="odometer"
                   value={carToEdit.odometer}
-                  onChange={(ev) => handleChange(ev, 'releaseYear')} />
+                  onChange={(ev) => handleChange(ev, 'odometer')} />
                 </label>
                 <br />
-                <input className="edit-button" type="submit" value="Submit" />
-                <button className="edit-button" onClick={() => setEditing(false)} >Cancel</button>
+                <button className="edit-button"  onClick={handleSubmit}>Submit</button>
+                <button className="edit-button" onClick={onCancel} >Cancel</button>
               </form>
-            </p>
+            </div>
           </div>
         </>
       }

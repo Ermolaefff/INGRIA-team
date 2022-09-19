@@ -127,3 +127,9 @@
 .input-label{
     font-size:25px;
 }
+
+.loadMore{
+    cursor: pointer;
+    text-decoration: underline;
+    color: ccc;
+}

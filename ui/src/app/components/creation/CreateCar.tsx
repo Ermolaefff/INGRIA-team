@@ -54,7 +54,7 @@ export function CreateCar({onCreate}:CreateCarProps) {
                 <input type="text"
                     className = "create-input"
                     placeholder="Enter car number..."
-                    value={carToCreate?.number}
+                    value={carToCreate?.car_number}
                     onChange={(ev:ChangeEvent<HTMLInputElement>) => handleChange(ev,'number')}/>
             </label>
             <br/>

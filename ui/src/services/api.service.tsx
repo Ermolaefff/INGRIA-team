@@ -1,6 +1,4 @@
-import { rejects } from 'assert';
 import { Car } from '../interfaces/car'
-// import { cars } from '../mock/mock_server';
 
 const serverUrl = 'http://localhost:8002';
 export class Api {
@@ -10,11 +8,19 @@ export class Api {
         body?: any,
         options?: any
     }): Promise<T>{
-        return fetch(options.endpoint, {...options.options, method: options.method, body: options.body}).then(res => res.json())
+        return fetch(options.endpoint,
+             {...options.options, method: options.method, 
+                body: options.body ?  JSON.stringify(options.body) : undefined, 
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },}
+             
+             ).then(res => res.json())
     }
 
 
-    getCars(page: number = 1, per_page: number = 2): Promise<Car[]>{
+    getCars(page: number = 1, per_page: number = 10): Promise<Car[]>{
         return this.makeRequest({
             endpoint:  `${serverUrl}/api/car?page=${page}&per_page=${per_page}`,
             method: 'GET',
@@ -23,28 +29,28 @@ export class Api {
 
     getCar(id: string | number): Promise<Car>{
         return this.makeRequest({
-            endpoint:  `${serverUrl}/api/car/${id}`,
+            endpoint:  `${serverUrl}/api/car/${id}/`,
             method: 'GET',
         })
     }
 
-    postCar(id: string, car: Car): Promise<Car>{
+    postCar(car: Car): Promise<Car>{
         return this.makeRequest({
-            endpoint:  `${serverUrl}/api/car/${id}`,
+            endpoint:  `${serverUrl}/api/car/`,
             method: 'POST',
             body: car
         })
     }
 
-    putCar(id: string, car: Car): Promise<Car>{
+    putCar(car: Car): Promise<Car>{
         return this.makeRequest({
-            endpoint:  `${serverUrl}/api/car/${id}`,
+            endpoint: `${serverUrl}/api/car/${car.id}`,
             method: 'PUT',
             body: car
         })
     }
 
-    deleteCar(id: string): Promise<{succsess: boolean}>{
+    deleteCar(id: number): Promise<{succsess: boolean}>{
         return this.makeRequest({
             endpoint:  `${serverUrl}/api/car/${id}`,
             method: 'DELETE',
