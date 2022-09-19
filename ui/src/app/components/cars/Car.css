@@ -1,0 +1,135 @@
+.container{
+    width: 100%;
+    margin-bottom: 20px;
+}
+.carCard{
+    display: flex;
+    justify-content: space-evenly;
+    background: white;
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+
+    translate: 0;
+    transition: translate 300ms;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+/* .carCard > *{
+    text-decoration: none;
+    color: black;
+} */
+.header{
+    display: flex;
+    background: #ddd;
+    padding: 10px;
+    justify-content: space-evenly;
+}
+.carCard:hover{
+    translate: 0 -5px;
+    z-index: 4;
+}
+
+.cardElement{
+    flex: 1 0 10%;
+    text-decoration: none;
+    text-align: center;
+    width: 50px;
+}
+.spacer{
+    flex: 1 1 auto;
+}
+
+.color{
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+}
+
+.search{
+    height: 20vh;
+    text-align: center;
+    position: relative;
+}
+.search label{
+    font-size: 1.2em;
+    font-weight: 600;
+}
+.search input{
+    font-size: larger;
+    padding: 10px;
+    border-radius: 4px;
+}
+.search img{
+    scale: 1.4;
+    translate: -5px 5px;
+}
+
+.image{
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 500px;
+}
+
+.information{
+    display: inline-block;
+    position: fixed;
+    color: black;
+    margin-top: 5px;
+    padding-left: 10px;
+    font-size: 30px;
+}
+
+.searchResults{
+    position: absolute;
+    width: 100%;
+    z-index: 5;
+    background: white;
+    
+}
+
+.back-button{
+    margin-top: 10px;
+    margin-left: 10px;
+    width:100px;
+    height: 30px;
+    font-size: 20px;
+}
+
+.create-button{
+    margin-top: 10px;
+    font-size: larger;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.create-input{
+    font-size: 25px;
+    margin-top: 5px;
+}
+
+.edit-input{
+    font-size: 25px;
+}
+
+.edit-button{
+    margin-top: 10px;
+    margin-left: 10px;
+    width:100px;
+    height: 30px;
+    font-size: 20px;
+}
+
+.input-label{
+    font-size:25px;
+}
+
+.loadMore{
+    cursor: pointer;
+    text-decoration: underline;
+    color: ccc;
+}
